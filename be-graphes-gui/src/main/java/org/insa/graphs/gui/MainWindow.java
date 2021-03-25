@@ -72,6 +72,9 @@ import org.insa.graphs.model.io.BinaryPathReader;
 import org.insa.graphs.model.io.GraphReader;
 import org.insa.graphs.model.io.MapMismatchException;
 
+/*
+    Hugo Barral 3MIC D - 25/03/2021
+*/
 public class MainWindow extends JFrame {
 
     /**
