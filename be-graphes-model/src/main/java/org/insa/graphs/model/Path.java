@@ -200,8 +200,23 @@ public class Path {
      * @return true if the path is valid, false otherwise.
      */
     public boolean isValid() {
-        boolean valid = false;
-        
+        boolean valid = true;
+        if (this.size() > 1) {
+            boolean first = true;
+            Arc prec = null, current = null;
+            for (Iterator<Arc> it = this.getArcs().iterator(); valid && it.hasNext(); ) {
+                if (first) {
+                    prec = it.next();
+                    valid = prec.getOrigin().equals(this.getOrigin());
+                    first = false;
+                } else {
+                    current = it.next();
+                    valid = prec.getDestination().equals(current.getOrigin());
+                    prec = current;
+                }
+            }
+            valid = prec.getDestination().equals(this.getDestination());
+        }
         return valid;
     }
 
