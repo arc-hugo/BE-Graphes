@@ -51,13 +51,42 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
-     * 
-     * @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        List<Arc> successors = null;
+        Arc arc = null;
+        Arc selected = null;
+        Node current = null;
+        Node previous = null;
+        boolean first = true;
+        float length = 0;
+        for(Iterator<Node> it = nodes.iterator(); it.hasNext(); ) {
+            if (first) {
+                previous = it.next();
+                first = false;
+            } else {
+                current = it.next();
+                if (!previous.hasSuccessors()) {
+                    throw new IllegalArgumentException();
+                }
+                successors = previous.getSuccessors();
+                for (Iterator<Arc> at = successors.iterator(); it.hasNext(); ) {
+                    arc = at.next();
+                    if (arc.getDestination().equals(current) && (length == 0 || arc.getLength() <= length)) {
+                        selected = arc;
+                        length = arc.getLength();
+                    }
+                }
+                if (selected == null) {
+                    throw new IllegalArgumentException();
+                }
+                arcs.add(selected);
+                length = 0;
+                previous = current;
+            }
+        }
         return new Path(graph, arcs);
     }
 
@@ -203,7 +232,8 @@ public class Path {
         boolean valid = true;
         if (this.size() > 1) {
             boolean first = true;
-            Arc previous = null, current = null;
+            Arc previous = null;
+            Arc current = null;
             for (Iterator<Arc> it = this.getArcs().iterator(); valid && it.hasNext(); ) {
                 if (first) {
                     previous = it.next();
