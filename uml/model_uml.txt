@@ -1,0 +1,62 @@
+@startuml
+package be-graphes-model {
+   class Graph {
+      + get(int id) : Node
+      + getGraphInformation() : GraphStatistics
+      + getMapId() : String
+      + getMapName() : String
+      + getNodes() : List<Node>
+      + size() : int
+      + toString() : String
+      + transpose() : Graph
+   }
+   class Node {
+      {static} + linkNodes(Node origin, Node destination, float length, RoadInformation roadInformation, ArrayList<Point> points) : Arc
+      # addSuccessor(Arc arc)
+      + compareTo(Node other) : int
+      + equals(Object other) : boolean
+      + getId() : int
+      + getNumberOfSuccessor() : int
+      + getPoint() : Point
+      + getSuccessors() : List<Arc>
+      + hasSuccessors() : boolean
+   }
+   class Path {
+      {static} + concatenate(Path... paths) : Path
+      {static} + createFastestPathFromNodes(Graph graph, List<Node> nodes) : Path
+      {static} + createShortestPathFromNodes(Graph graph, List<Node> nodes) : Path
+      + getArcs() : List<Arc>
+      + getDestination() : Node
+      + getGraph() : Graph
+      + getLength() : float
+      + getMinimumTravalTime() : double
+      + getOrigin() : Node
+      + getTravelTime(double speed) : double
+      + isEmpty() : boolean
+      + isValid() : boolean
+      + size() : int
+   }
+   class RoadInformation {
+      + getAccessRestrictions() : AccessRestrictions
+      + getMaximumSpeed() : int
+      + getName() : String
+      + getType() : RoadType
+      + isOneWay() : boolean
+      + toString() : String
+   }
+   interface Arc {
+      {abstract} + getDestination() : Node
+      {abstract} + getLength() : float
+      {abstract} + getOrigin() : Node
+      {abstract} + getPoints() : List<Point>
+      {abstract} + getRoadInformation() : RoadInformation
+      + getMinimumTravalTime() : double
+      + getTravelTime() : double
+   }
+   Arc --o Path
+   Arc --* Node : origin >
+   Arc --* Node : destination >
+   Arc -- RoadInformation : inform <
+   Node -- Graph : list <
+}
+@enduml
