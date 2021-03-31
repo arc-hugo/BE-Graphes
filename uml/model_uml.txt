@@ -53,10 +53,13 @@ package be-graphes-model {
       + getMinimumTravalTime() : double
       + getTravelTime() : double
    }
-   Arc --o Path
+   Arc --o Path : list <
    Arc --* Node : origin >
    Arc --* Node : destination >
    Arc -- RoadInformation : inform <
    Node -- Graph : list <
+   Node o-- Path : origin <
+   Node o-- Path : destination <
+   Graph -- Path : contained <
 }
 @enduml
