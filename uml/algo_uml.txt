@@ -1,0 +1,116 @@
+@startuml
+package be-graphes-algo {
+   package shortestpath {
+      class AStarAlgorithm {}
+      class DijkstraAlgorithm {
+         # doRun() : ShortestPathSolution
+      }
+      class BellmanFordAlgorithm {
+         # doRun() : ShortestPathSolution
+      }
+      class ShortestPathAlgorithm {
+         {abstract} # doRun() : ShortestPathSolution
+         + getInputData() : ShortestPathData
+         + notifyDestinationReached(Node node)
+         + notifyNodeMarked(Node node)
+         + notifyNodeReached(Node node)
+         + notifyOriginProcessed(Node node)
+         + run() : ShortestPathSolution
+      }
+      class ShortestPathData {
+         + getDestination() : Node
+         + getOrigin() : Node
+         + toString() : String
+      }
+      class ShortestPathSolution {
+         + getInputData() : ShortestPathData
+         + getPath() : Path
+         + toString() : String
+      }
+      class ShortestPathTextObserver {
+         + notifyDestinationReached (Node node)
+         + notifyNodeMarked (Node node)
+         + notifyNodeReached (Node node)
+         + notifyOriginProcessed (Node node)
+      }
+      interface ShortestPathObserver {
+         + notifyDestinationReached(Node node)
+         + notifyNodeMarked(Node node)
+         + notifyNodeReached(Node node)
+         + notifyOriginProcessed(Node node)         
+      }
+      
+      ShortestPathAlgorithm ..|> ShortestPathObserver
+   }
+   class AbstractAlgorithm <Observer> {
+      # AbstractInputData data
+      # ArrayList<Observer> observers
+      {abstract} # doRun() : ShortestPathSolution
+      + addObserver(Observer observer)
+      + getInputData() : AbstractInputData
+      + getObservers() : ArrayList<Observer>
+      + run() : AbstractSolution
+   }
+   class AbstractInputData {
+      # ArcInspector arcInspector
+      + getCost(Arc arc) : double
+      + getGraph() : Graph
+      + getMaximumSpeed() : int
+      + getMode() : AbstractInputData.Mode
+      + isAllowed(Arc arc) : boolean
+   }
+   class AbstractSolution {
+      + getInputData() : AbstractInputData
+      + getSolvingTime() : Duration
+      + getStatus() : AbstractSolution.Status
+      + isFeasible() : boolean
+      # setSolving(Duration solvingTime)
+   }
+   class AlgorithmFactory {
+      {static} + createAlgorithm (Class<? extends AbstractAlgorithm<?>> algorithm, AbstractInputData data) : AbstractAlgorithm<?>
+      {static} + getAlgorithmClass (Class<? extends AbstractAlgorithm<?>> baseAlgorithm, String name) : Class<? extends AbstractAlgorithm<?>>
+      {static} + getAlgorithmNames (Class<? extends AbstractAlgorithm<?>> baseAlgorithm) : Set<String>
+      {static} + registerAlgorithm (Class<? extends AbstractAlgorithm<?>> baseAlgorithm, String name, Class<? extends AbstractAlgorithm<?>> algoClass)
+   }
+   class ArcInspectorFactory {
+      {static} + getAllFilters() : List<ArcInspector>
+   }
+   interface ArcInspector {
+      + getCost (Arc arc) : double
+      + getMaximumSpeed() : int
+      + getMode() : AbstractInputData.Mode
+      + isAllowed(Arc arc) : boolean
+   }
+   enum AbstractInputData.Mode {
+      LENGTH
+      TIME
+      {static} + valueOf (String name) : AbstractInputData.Mode
+      {static} + values(): AbstractInputData.Mode[]
+   }
+   enum AbstractInputData.Status {
+      FEASIBLE
+      INFEASIBLE
+      OPTIMAL
+      UNKNOWN
+      {static} + valueOf (String name) : AbstractInputData.Status
+      {static} + values(): AbstractInputData.Status[]
+   }
+   AStarAlgorithm --|> DijkstraAlgorithm
+   DijkstraAlgorithm --|> ShortestPathAlgorithm
+   BellmanFordAlgorithm --|> ShortestPathAlgorithm
+   ShortestPathAlgorithm --|> AbstractAlgorithm
+   ShortestPathData --|> AbstractInputData
+   ShortestPathSolution --|> AbstractSolution
+      
+   AbstractAlgorithm *-right- AbstractSolution : run >
+   AbstractAlgorithm o-- AbstractInputData : data <
+   
+   AbstractSolution o-- AbstractInputData.Status : status <
+   
+   AbstractInputData o-- AbstractInputData.Mode : mode <
+   
+   AlgorithmFactory -up- AbstractAlgorithm : instanciate >
+   
+   ArcInspectorFactory -- ArcInspector : list >
+}
+@enduml
