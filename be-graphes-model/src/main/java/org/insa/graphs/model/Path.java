@@ -171,7 +171,7 @@ public class Path {
          *
          * @param graph Graph containing the path.
          */
-    public Path(Graph graph) {
+        public Path(Graph graph) {
             this.graph = graph;
             this.origin = null;
             this.arcs = new ArrayList<>();
@@ -183,7 +183,7 @@ public class Path {
          * @param graph Graph containing the path.
          * @param node Single node of the path.
          */
-    public Path(Graph graph, Node node) {
+        public Path(Graph graph, Node node) {
             this.graph = graph;
             this.origin = node;
             this.arcs = new ArrayList<>();
@@ -195,7 +195,7 @@ public class Path {
          * @param graph Graph containing the path.
          * @param arcs Arcs to construct the path.
          */
-    public Path(Graph graph, List < Arc > arcs) {
+        public Path(Graph graph, List < Arc > arcs) {
             this.graph = graph;
             this.arcs = arcs;
             this.origin = arcs.size() > 0 ? arcs.get(0).getOrigin() : null;

@@ -8,10 +8,10 @@ package org.insa.graphs.model;
  *     This class is meant to implement the separation principle of the Djikstra algorithm by labeling the graph's nodes.
  * </p>
  */
-public class Label {
+public class Label implements Comparable<Label> {
 
     // Node associated
-    private Node sommetCourant;
+    final private Node associatedNode;
 
     // Node's mark
     private boolean mark;
@@ -19,7 +19,7 @@ public class Label {
     // Shortest path cost to this node
     private float cost;
 
-    // Previous node
+    // Arc of previous node
     private Arc parent;
 
     /**
@@ -27,7 +27,7 @@ public class Label {
      * @param sommetCourant Associated node.
      */
     public Label (Node sommetCourant) {
-        this.sommetCourant = sommetCourant;
+        this.associatedNode = sommetCourant;
         this.mark = false;
         this.cost = Float.POSITIVE_INFINITY;
         this.parent = null;
@@ -40,7 +40,7 @@ public class Label {
      * @param parent Arc with parent node has its origin.
      */
     public Label (Node sommetCourant, float cost, Arc parent) {
-        this.sommetCourant = sommetCourant;
+        this.associatedNode = sommetCourant;
         this.mark = false;
         this.cost = cost;
         this.parent = parent;
@@ -49,12 +49,17 @@ public class Label {
     /**
      * @return Node associated top this label.
      */
-    public Node getNode() { return  this.sommetCourant; }
+    public Node getNode() { return  this.associatedNode; }
 
     /**
      * @return Cost associated to this label.
      */
     public float getCost() { return this.cost; }
+
+    /**
+     * @return Arc of previous node
+     */
+    public Arc getParent() { return this.parent; }
 
     /**
      * @return If this label is marked.
@@ -74,5 +79,10 @@ public class Label {
     public void changeParent(Arc parent, float cost) {
         this.parent = parent;
         this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(Label o) {
+        return Float.compare(this.getCost(), o.getCost());
     }
 }
