@@ -24,10 +24,10 @@ public class Label implements Comparable<Label> {
 
     /**
      * Associate a Label to a Node with inifinite cost and no parent.
-     * @param sommetCourant Associated node.
+     * @param associatedNode Associated node.
      */
-    public Label (Node sommetCourant) {
-        this.associatedNode = sommetCourant;
+    public Label (Node associatedNode) {
+        this.associatedNode = associatedNode;
         this.mark = false;
         this.cost = Float.POSITIVE_INFINITY;
         this.parent = null;
@@ -35,12 +35,12 @@ public class Label implements Comparable<Label> {
 
     /**
      * Associate a Label to a Node with custom cost and parent.
-     * @param sommetCourant Associated node.
+     * @param associatedNode Associated node.
      * @param cost Associated cost.
      * @param parent Arc with parent node has its origin.
      */
-    public Label (Node sommetCourant, float cost, Arc parent) {
-        this.associatedNode = sommetCourant;
+    public Label (Node associatedNode, double cost, Arc parent) {
+        this.associatedNode = associatedNode;
         this.mark = false;
         this.cost = cost;
         this.parent = parent;
@@ -55,6 +55,20 @@ public class Label implements Comparable<Label> {
      * @return Cost associated to this label.
      */
     public double getCost() { return this.cost; }
+
+    /**
+     *
+     * @return Estimated cost from this label to destination.
+     */
+    public double getDestinationCost() { return 0; }
+
+    /**
+     *
+     * @return Total of cost from origin and cost to destination.
+     * @see Label#getCost()
+     * @see Label#getDestinationCost()
+     */
+    public double getTotalCost() { return this.getCost() + this.getDestinationCost(); }
 
     /**
      * @return Arc of previous node
@@ -82,5 +96,7 @@ public class Label implements Comparable<Label> {
     }
 
     @Override
-    public int compareTo(Label o) { return Double.compare(this.getCost(), o.getCost()); }
+    public int compareTo(Label o) {
+        return Double.compare(this.getCost(), o.getCost());
+    }
 }

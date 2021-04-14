@@ -91,7 +91,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         } else {
             solution = new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE);
         }
-
         return solution;
     }
 
