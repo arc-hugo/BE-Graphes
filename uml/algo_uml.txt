@@ -41,6 +41,7 @@ package be-graphes-algo {
       }
       
       ShortestPathAlgorithm ..|> ShortestPathObserver
+      ShortestPathTextObserver ..|> ShortestPathObserver
    }
    class AbstractAlgorithm <Observer> {
       # AbstractInputData data

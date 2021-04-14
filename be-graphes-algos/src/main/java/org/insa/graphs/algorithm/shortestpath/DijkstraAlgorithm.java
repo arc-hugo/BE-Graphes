@@ -1,5 +1,6 @@
 package org.insa.graphs.algorithm.shortestpath;
 
+import org.insa.graphs.algorithm.AbstractInputData;
 import org.insa.graphs.algorithm.AbstractSolution;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.algorithm.utils.ElementNotFoundException;
@@ -25,7 +26,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         ShortestPathSolution solution = null;
         Path path = null;
         BinaryHeap<Label> heap = new BinaryHeap<Label>();
-        Label labels[] = new Label[data.getGraph().size()];
+        Label[] labels = new Label[data.getGraph().size()];
         List<Node> nodes = data.getGraph().getNodes();
         Node origin = data.getOrigin();
         Node destination = data.getDestination();
@@ -53,15 +54,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             // Update all successors of min
             for (Arc current : min.getNode().getSuccessors()) {
                 Label label = labels[current.getDestination().getId()];
-                if (!label.isMarked()) {
-                    if (label.getCost() > (min.getCost() + current.getLength())) {
+                if (!label.isMarked() && data.isAllowed(current)) {
+                    if (label.getCost() > (min.getCost() + data.getCost(current))) {
                         label.changeParent(current, min.getCost() + current.getLength());
                         try {
                             heap.remove(label);
-                            heap.insert(label);
-                        } catch (ElementNotFoundException e) {
-                            heap.insert(label);
-                        }
+                        } catch (ElementNotFoundException e) { /* rien */ }
+                        heap.insert(label);
                     }
                 }
             }
@@ -75,8 +74,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 arcs.add(0, label.getParent());
                 label = labels[label.getParent().getOrigin().getId()];
             }
-            path = new Path(data.getGraph(), arcs);
 
+            path = new Path(data.getGraph(), arcs);
             solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, path);
         } else {
             solution = new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE);

@@ -17,7 +17,7 @@ public class Label implements Comparable<Label> {
     private boolean mark;
 
     // Shortest path cost to this node
-    private float cost;
+    private double cost;
 
     // Arc of previous node
     private Arc parent;
@@ -54,7 +54,7 @@ public class Label implements Comparable<Label> {
     /**
      * @return Cost associated to this label.
      */
-    public float getCost() { return this.cost; }
+    public double getCost() { return this.cost; }
 
     /**
      * @return Arc of previous node
@@ -76,13 +76,13 @@ public class Label implements Comparable<Label> {
      * @param parent Arc with parent node has its origin.
      * @param cost New cost.
      */
-    public void changeParent(Arc parent, float cost) {
+    public void changeParent(Arc parent, double cost) {
         this.parent = parent;
         this.cost = cost;
     }
 
     @Override
     public int compareTo(Label o) {
-        return Float.compare(this.getCost(), o.getCost());
+        return Double.compare(this.getCost(), o.getCost());
     }
 }
