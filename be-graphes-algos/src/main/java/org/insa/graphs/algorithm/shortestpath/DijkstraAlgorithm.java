@@ -44,8 +44,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         heap.insert(label_origin);
 
-        // Iterate Djikstra while destination is not marked
-        while (!label_destination.isMarked()) {
+        // Iterate Djikstra while destination is not marked or heap is not Empty
+        while (!label_destination.isMarked() && !heap.isEmpty()) {
             // Extract min from heap and marked it
             Label min = heap.deleteMin();
             min.setMarked();
@@ -67,15 +67,21 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             }
         }
 
-        // Create solution
-        ArrayList<Arc> arcs = new ArrayList<>();
-        Label label = label_destination;
-        while (label.getParent() != null) {
-            arcs.add(0, label.getParent());
-            label = labels[label.getParent().getOrigin().getId()];
+        // Verify if path is feasible and create solution
+        if (label_destination.isMarked()) {
+            ArrayList<Arc> arcs = new ArrayList<>();
+            Label label = label_destination;
+            while (label.getParent() != null) {
+                arcs.add(0, label.getParent());
+                label = labels[label.getParent().getOrigin().getId()];
+            }
+            path = new Path(data.getGraph(), arcs);
+
+            solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, path);
+        } else {
+            solution = new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE);
         }
-        path = new Path(data.getGraph(), arcs);
-        solution = new ShortestPathSolution(data, AbstractSolution.Status.OPTIMAL, path);
+
         return solution;
     }
 
