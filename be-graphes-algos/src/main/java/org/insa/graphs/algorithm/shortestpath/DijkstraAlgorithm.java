@@ -56,7 +56,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 Label label = labels[current.getDestination().getId()];
                 if (!label.isMarked() && data.isAllowed(current)) {
                     if (label.getCost() > (min.getCost() + data.getCost(current))) {
-                        label.changeParent(current, min.getCost() + current.getLength());
+                        label.changeParent(current, min.getCost() + data.getCost(current));
                         try {
                             heap.remove(label);
                         } catch (ElementNotFoundException e) { /* rien */ }
