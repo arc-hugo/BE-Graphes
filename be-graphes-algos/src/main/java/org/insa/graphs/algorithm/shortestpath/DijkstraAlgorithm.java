@@ -32,8 +32,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Node destination = data.getDestination();
 
         // Initiate labels and heap
-        Label label_destination = new Label(destination);
         Label label_origin = new Label(origin, 0, null);
+        Label label_destination;
+        if (origin.getId() != destination.getId())
+            label_destination = new Label(destination);
+        else
+            label_destination = label_origin;
         for (Node current : nodes) {
             if (current.getId() == origin.getId()) {
                 labels[current.getId()] = label_origin;
@@ -58,15 +62,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 Label label = labels[current.getDestination().getId()];
                 if (!label.isMarked() && data.isAllowed(current)) {
                     if (label.getCost() > (min.getCost() + data.getCost(current))) {
-                        label.changeParent(current, min.getCost() + data.getCost(current));
-                        try {
-                            heap.remove(label);
-                        } catch (ElementNotFoundException e) {
+                        if (label.getParent() == null) {
                             if (label.getNode().getId() == destination.getId())
                                 notifyDestinationReached(destination);
                             else
                                 notifyNodeReached(label.getNode());
+                        } else {
+                            heap.remove(label);
                         }
+                        label.changeParent(current, min.getCost() + data.getCost(current));
                         heap.insert(label);
                     }
                 }
