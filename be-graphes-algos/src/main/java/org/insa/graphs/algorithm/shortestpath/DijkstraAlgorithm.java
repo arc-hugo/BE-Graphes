@@ -44,12 +44,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             }
         }
         heap.insert(label_origin);
+        notifyOriginProcessed(origin);
 
         // Iterate Djikstra while destination is not marked or heap is not Empty
         while (!label_destination.isMarked() && !heap.isEmpty()) {
             // Extract min from heap and marked it
             Label min = heap.deleteMin();
             min.setMarked();
+            notifyNodeMarked(min.getNode());
 
             // Update all successors of min
             for (Arc current : min.getNode().getSuccessors()) {
@@ -59,7 +61,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         label.changeParent(current, min.getCost() + data.getCost(current));
                         try {
                             heap.remove(label);
-                        } catch (ElementNotFoundException e) { /* rien */ }
+                        } catch (ElementNotFoundException e) {
+                            if (label.getNode().getId() == destination.getId())
+                                notifyDestinationReached(destination);
+                            else
+                                notifyNodeReached(label.getNode());
+                        }
                         heap.insert(label);
                     }
                 }
