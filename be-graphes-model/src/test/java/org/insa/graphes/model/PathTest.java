@@ -34,7 +34,7 @@ public class PathTest {
             invalidPath;
 
     @BeforeClass
-    public static void initAll() throws IOException {
+    public static void initAll() {
 
         // 10 and 20 meters per seconds
         RoadInformation speed10 = new RoadInformation(RoadType.MOTORWAY, null, true, 36, ""),

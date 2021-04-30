@@ -78,8 +78,6 @@ public class ArcInspectorFactory {
             }
         });
 
-        // Only road allowed for cars and time:
-
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {
@@ -107,6 +105,7 @@ public class ArcInspectorFactory {
             }
         });
 
+        // Only road allowed for cars and time:
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {

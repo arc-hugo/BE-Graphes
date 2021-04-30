@@ -31,10 +31,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         // Initiate labels and heap
         Label label_origin = new Label(origin, 0, null);
         Label label_destination;
+
         if (origin.getId() != destination.getId())
             label_destination = new Label(destination);
         else
             label_destination = label_origin;
+
         for (Node current : nodes) {
             if (current.getId() == origin.getId()) {
                 labels[current.getId()] = label_origin;
