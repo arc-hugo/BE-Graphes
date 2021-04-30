@@ -16,12 +16,4 @@ public class LabelStar extends Label{
     }
 
     public double getDestinationCost() { return this.destinationCost; }
-
-    @Override
-    public int compareTo(Label o) {
-        int compare = Double.compare(this.getTotalCost(), o.getTotalCost());
-        if (compare == 0)
-            compare = Double.compare(this.getDestinationCost(), o.getDestinationCost());
-        return compare;
-    }
 }
