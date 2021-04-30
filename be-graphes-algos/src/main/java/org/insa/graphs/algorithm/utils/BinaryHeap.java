@@ -167,6 +167,20 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     }
 
     /**
+     * @return If the heap is valid, each index must be superior to its parent.
+     */
+    public boolean isValid() {
+        boolean valid = true;
+        if (!this.isEmpty()) {
+            for (int i = 1; i < this.size() && valid; i++){
+                if (this.array.get(i).compareTo(this.array.get(this.indexParent(i))) < 0)
+                    valid = false;
+            }
+        }
+        return valid;
+    }
+
+    /**
      * Creates a multi-lines string representing a sorted view of this binary heap.
      * 
      * @return a string containing a sorted view this binary heap.

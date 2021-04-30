@@ -1,16 +1,13 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-import org.insa.graphs.algorithm.AbstractInputData;
 import org.insa.graphs.algorithm.AbstractSolution;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
-import org.insa.graphs.algorithm.utils.ElementNotFoundException;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Label;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
@@ -23,9 +20,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     protected ShortestPathSolution doRun() {
         // Initiate variables
         final ShortestPathData data = getInputData();
-        ShortestPathSolution solution = null;
-        Path path = null;
-        BinaryHeap<Label> heap = new BinaryHeap<Label>();
+        ShortestPathSolution solution;
+        Path path;
+        BinaryHeap<Label> heap = new BinaryHeap<>();
         Label[] labels = new Label[data.getGraph().size()];
         List<Node> nodes = data.getGraph().getNodes();
         Node origin = data.getOrigin();
@@ -50,7 +47,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         heap.insert(label_origin);
         notifyOriginProcessed(origin);
 
-        // Iterate Djikstra while destination is not marked or heap is not Empty
+        // Iterate Dijkstra while destination is not marked or heap is not Empty
         while (!label_destination.isMarked() && !heap.isEmpty()) {
             // Extract min from heap and marked it
             Label min = heap.deleteMin();
