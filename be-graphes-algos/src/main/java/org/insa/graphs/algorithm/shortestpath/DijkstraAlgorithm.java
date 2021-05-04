@@ -12,65 +12,82 @@ import java.util.List;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+    protected final ShortestPathData data;
+
+    protected BinaryHeap<Label> heap;
+    protected Label[] labels;
+    protected List<Node> nodes;
+
+    protected Node origin;
+    protected Node destination;
+
+    protected Label label_origin;
+    protected Label label_destination;
+
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
+
+        // Initiate data, nodes, labels and heap
+        this.data = data;
+        this.heap = new BinaryHeap<>();
+        this.labels = new Label[data.getGraph().size()];
+        this.nodes = data.getGraph().getNodes();
+
+        this.origin = this.data.getOrigin();
+        this.destination = this.data.getDestination();
     }
 
     @Override
     protected ShortestPathSolution doRun() {
         // Initiate variables
-        final ShortestPathData data = getInputData();
         ShortestPathSolution solution;
         Path path;
-        BinaryHeap<Label> heap = new BinaryHeap<>();
-        Label[] labels = new Label[data.getGraph().size()];
-        List<Node> nodes = data.getGraph().getNodes();
-        Node origin = data.getOrigin();
-        Node destination = data.getDestination();
 
-        // Initiate labels and heap
-        Label label_origin = new Label(origin, 0, null);
-        Label label_destination;
+        // Initiate if we don't come from AStar
+        if (this.label_origin == null) {
+            this.label_origin = new Label(origin, 0, null);
 
-        if (origin.getId() != destination.getId())
-            label_destination = new Label(destination);
-        else
-            label_destination = label_origin;
+            if (this.origin.getId() != this.destination.getId())
+                this.label_destination = new Label(destination);
+            else
+                this.label_destination = this.label_origin;
 
-        for (Node current : nodes) {
-            if (current.getId() == origin.getId()) {
-                labels[current.getId()] = label_origin;
-            } else if (current.getId() == destination.getId()) {
-                labels[current.getId()] = label_destination;
-            } else {
-                labels[current.getId()] = new Label(current);
+            for (Node current : this.nodes) {
+                if (current.getId() == this.origin.getId()) {
+                    this.labels[current.getId()] = this.label_origin;
+                } else if (current.getId() == this.destination.getId()) {
+                    this.labels[current.getId()] = this.label_destination;
+                } else {
+                    this.labels[current.getId()] = new Label(current);
+                }
             }
         }
-        heap.insert(label_origin);
-        notifyOriginProcessed(origin);
+
+        this.heap.insert(this.label_origin);
+        notifyOriginProcessed(this.origin);
 
         // Iterate Dijkstra while destination is not marked or heap is not Empty
-        while (!label_destination.isMarked() && !heap.isEmpty()) {
+        while (!this.label_destination.isMarked() && !this.heap.isEmpty()) {
             // Extract min from heap and marked it
-            Label min = heap.deleteMin();
+            Label min = this.heap.deleteMin();
             min.setMarked();
             notifyNodeMarked(min.getNode());
 
             // Update all successors of min
             for (Arc current : min.getNode().getSuccessors()) {
-                Label label = labels[current.getDestination().getId()];
-                if (!label.isMarked() && data.isAllowed(current)) {
-                    if (label.getCost() > (min.getCost() + data.getCost(current))) {
+                Label label = this.labels[current.getDestination().getId()];
+                if (!label.isMarked() && this.data.isAllowed(current)) {
+                    if (label.getCost() > (min.getCost() + this.data.getCost(current))) {
                         if (label.getParent() == null) {
-                            if (label.getNode().getId() == destination.getId())
-                                notifyDestinationReached(destination);
+                            if (label.getNode().getId() == this.destination.getId())
+                                notifyDestinationReached(this.destination);
                             else
                                 notifyNodeReached(label.getNode());
                         } else {
-                            heap.remove(label);
+                            this.heap.remove(label);
                         }
-                        label.changeParent(current, min.getCost() + data.getCost(current));
-                        heap.insert(label);
+                        label.changeParent(current, min.getCost() + this.data.getCost(current));
+                        this.heap.insert(label);
                     }
                 }
             }
