@@ -1,6 +1,6 @@
 package org.insa.graphs.model;
 
-public class LabelStar extends Label{
+public class LabelStar extends Label {
 
     // Estimated cost to destination
     private double destinationCost;
@@ -15,5 +15,10 @@ public class LabelStar extends Label{
         this.destinationCost = 0;
     }
 
+    public void setDestinationCost(double cost) {
+        this.destinationCost = cost;
+    }
+
+    @Override
     public double getDestinationCost() { return this.destinationCost; }
 }

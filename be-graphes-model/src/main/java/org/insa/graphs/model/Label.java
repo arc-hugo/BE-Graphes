@@ -63,6 +63,12 @@ public class Label implements Comparable<Label> {
     public double getDestinationCost() { return 0; }
 
     /**
+     * Set estimated cost from this label to destination.
+     */
+    public void setDestinationCost(double cost) { }
+
+
+    /**
      *
      * @return Total of cost from origin and cost to destination.
      * @see Label#getCost()
