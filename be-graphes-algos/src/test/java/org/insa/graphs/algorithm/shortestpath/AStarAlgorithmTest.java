@@ -4,6 +4,7 @@ import org.insa.graphs.algorithm.AbstractSolution;
 import org.insa.graphs.algorithm.ArcInspectorFactory;
 import org.insa.graphs.model.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.util.EnumMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DijkstraAlgorithmTest {
+public class AStarAlgorithmTest {
 
     // Small graph
     protected static Graph graph;
@@ -39,10 +40,13 @@ public class DijkstraAlgorithmTest {
         RoadInformation info = new RoadInformation(RoadInformation.RoadType.PEDESTRIAN, new AccessRestrictions(restrictions), true, 1, "");
 
         // Create nodes
-        nodes = new Node[5];
-        for (int i = 0; i < nodes.length; i++)
-            nodes[i] = new Node(i, null);
-
+        nodes = new Node[] {
+                new Node(0, new Point(0, 0)),
+                new Node(1, new Point(0, 0)),
+                new Node(2, new Point(0, 0)),
+                new Node(3, new Point(0, 0)),
+                new Node(4, new Point(0, 0))
+        };
         // Create arcs
         a2b = Node.linkNodes(nodes[0], nodes[1], 10, info, null);
         a2d = Node.linkNodes(nodes[0], nodes[3], 5, info, null);
@@ -64,15 +68,16 @@ public class DijkstraAlgorithmTest {
         shortest2c = new Path(graph, Arrays.asList(new Arc[]{a2d, d2b, b2c}));
         shortest2d = new Path(graph, Arrays.asList(new Arc[]{a2d}));
         shortest2e = new Path(graph, Arrays.asList(new Arc[]{a2d, d2e}));
+
     }
 
     @Test
-    public void testDijkstraAlgorithmValid() {
+    public void testAStarAlgorithmValid() {
         // Accessible path from origin to destination
 
         // A -> A
         ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[0], ArcInspectorFactory.getAllFilters().get(0));
-        ShortestPathSolution solution = new DijkstraAlgorithm(data).run();
+        ShortestPathSolution solution = new AStarAlgorithm(data).run();
         assertTrue(solution.getPath().isValid());
         assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
         assertEquals(shortest2a.getLength(), solution.getPath().getLength(), 0);
@@ -80,7 +85,7 @@ public class DijkstraAlgorithmTest {
 
         // A -> B
         data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(0));
-        solution = new DijkstraAlgorithm(data).run();
+        solution = new AStarAlgorithm(data).run();
         assertTrue(solution.getPath().isValid());
         assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
         assertEquals(shortest2b.getLength(), solution.getPath().getLength(), 0);
@@ -94,7 +99,7 @@ public class DijkstraAlgorithmTest {
 
         // A -> C
         data = new ShortestPathData(graph, nodes[0], nodes[2], ArcInspectorFactory.getAllFilters().get(0));
-        solution = new DijkstraAlgorithm(data).run();
+        solution = new AStarAlgorithm(data).run();
         assertTrue(solution.getPath().isValid());
         assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
         assertEquals(shortest2c.getLength(), solution.getPath().getLength(), 0);
@@ -108,7 +113,7 @@ public class DijkstraAlgorithmTest {
 
         // A -> D
         data = new ShortestPathData(graph, nodes[0], nodes[3], ArcInspectorFactory.getAllFilters().get(0));
-        solution = new DijkstraAlgorithm(data).run();
+        solution = new AStarAlgorithm(data).run();
         assertTrue(solution.getPath().isValid());
         assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
         assertEquals(shortest2d.getLength(), solution.getPath().getLength(), 0);
@@ -122,7 +127,7 @@ public class DijkstraAlgorithmTest {
 
         // A -> E
         data = new ShortestPathData(graph, nodes[0], nodes[4], ArcInspectorFactory.getAllFilters().get(0));
-        solution = new DijkstraAlgorithm(data).run();
+        solution = new AStarAlgorithm(data).run();
         assertTrue(solution.getPath().isValid());
         assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
         assertEquals(shortest2e.getLength(), solution.getPath().getLength(), 0);
@@ -134,28 +139,5 @@ public class DijkstraAlgorithmTest {
         assertEquals(alt.getPath().getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
     }
 
-    @Test
-    public void testDijkstraAlgorithmInvalid() {
-        // Unaccessible path from origin to destination (no pedestrian roads)
 
-        // A -> B
-        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(3));
-        ShortestPathSolution solution = new DijkstraAlgorithm(data).run();
-        assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
-
-        // A -> C
-        data = new ShortestPathData(graph, nodes[0], nodes[2], ArcInspectorFactory.getAllFilters().get(1));
-        solution = new DijkstraAlgorithm(data).run();
-        assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
-
-        // A -> D
-        data = new ShortestPathData(graph, nodes[0], nodes[3], ArcInspectorFactory.getAllFilters().get(1));
-        solution = new DijkstraAlgorithm(data).run();
-        assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
-
-        // A -> E
-        data = new ShortestPathData(graph, nodes[0], nodes[4], ArcInspectorFactory.getAllFilters().get(1));
-        solution = new DijkstraAlgorithm(data).run();
-        assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
-    }
 }
