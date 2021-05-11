@@ -1,5 +1,6 @@
 package org.insa.graphs.algorithm.shortestpath;
 
+import org.insa.graphs.algorithm.AbstractInputData;
 import org.insa.graphs.algorithm.AbstractSolution;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Arc;
@@ -77,7 +78,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             for (Arc current : min.getNode().getSuccessors()) {
                 Label label = this.labels[current.getDestination().getId()];
                 if (!label.isMarked() && this.data.isAllowed(current)) {
-                    if (label.getTotalCost() > (min.getTotalCost() + this.data.getCost(current))) {
+                    if (label.getCost() > (min.getCost() + this.data.getCost(current))) {
                         if (label.getParent() == null) {
                             if (label.getNode().getId() == this.destination.getId())
                                 notifyDestinationReached(this.destination);
@@ -86,7 +87,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         } else {
                             this.heap.remove(label);
                         }
-                        label.changeParent(current, min.getCost() + this.data.getCost(current));
+
+                        // Recompute est for AStar if time mode is active
+                        if (this.data.getMode() == AbstractInputData.Mode.TIME){
+                            double est = label.getNode().getPoint().distanceTo(this.destination.getPoint()) * 3600.0
+                                    / (current.getRoadInformation().getMaximumSpeed() * 1000.0);
+                            label.setDestinationCost(est);
+                        }
+                        // New cost
+                        double cost = min.getCost() + this.data.getCost(current);
+                        label.changeParent(current, cost);
                         this.heap.insert(label);
                     }
                 }
