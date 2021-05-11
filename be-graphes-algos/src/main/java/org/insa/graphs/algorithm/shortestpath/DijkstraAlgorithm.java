@@ -90,7 +90,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
                         // Recompute est for AStar if time mode is active
                         if (this.data.getMode() == AbstractInputData.Mode.TIME){
-                            double est = label.getNode().getPoint().distanceTo(this.destination.getPoint()) * 3600.0
+                            double est = label.getNode().getPoint().distanceTo(this.destination.getPoint())
                                     / (current.getRoadInformation().getMaximumSpeed() * 1000.0);
                             label.setDestinationCost(est);
                         }
