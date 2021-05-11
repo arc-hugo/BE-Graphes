@@ -101,11 +101,24 @@ public class Label implements Comparable<Label> {
         this.cost = cost;
     }
 
+    public int compareTo(Label o, double cost) {
+        if (this.getTotalCost() < o.getTotalCost()+cost) {
+            return -1;
+        } else if (this.getTotalCost() == o.getTotalCost()+cost) {
+            if (this.getDestinationCost() < o.getDestinationCost() + cost) {
+                return -1;
+            } else if (this.getDestinationCost() == o.getDestinationCost() + cost) {
+                return 0;
+            }
+            return 1;
+        }
+        return 1;
+    }
+
     @Override
     public int compareTo(Label o) {
-        int compare = Double.compare(this.getTotalCost(), o.getTotalCost());
-        if (compare == 0)
-            compare = Double.compare(this.getDestinationCost(), o.getDestinationCost());
-        return compare;
+        return compareTo(o, 0);
     }
+
+
 }
