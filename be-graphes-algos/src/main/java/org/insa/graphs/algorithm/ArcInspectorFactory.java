@@ -20,7 +20,7 @@ public class ArcInspectorFactory {
 
         // Common filters:
 
-        // No filter (all arcs allowed):
+        // No filter (all arcs allowed) in length:
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {
@@ -78,6 +78,7 @@ public class ArcInspectorFactory {
             }
         });
 
+        // No filter (all arcs allowed) in time:
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {
