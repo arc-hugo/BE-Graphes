@@ -30,12 +30,12 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
-        // Compute the estimated distance to destination before Dijkstra
+        // Compute the estimated distance to destination before Dijkstra (est <= cost)
         Point dest = this.label_destination.getNode().getPoint();
-        for (int i = 0; i < this.labels.length; i++) {
-            Point point = this.labels[i].getNode().getPoint();
-            double dist = point.distanceTo(dest);
-            this.labels[i].setDestinationCost(dist);
+        for (Label label : this.labels) {
+            Point point = label.getNode().getPoint();
+            double est = point.distanceTo(dest);
+            label.setDestinationCost(est);
         }
         return super.doRun();
     }
