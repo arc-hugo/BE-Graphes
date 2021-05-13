@@ -21,5 +21,4 @@ doc
 # Project specific files and folders
 *.mapfg
 *.mapgr
-*.path
 *.tgz
