@@ -31,16 +31,16 @@ public class AStarAlgorithmTest extends DijkstraAlgorithmTest{
     public void testInvalid() {
         // Unaccessible path from origin to destination (no pedestrian roads)
 
-        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(0));
+        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoB(new DijkstraAlgorithm(data));
 
-        data = new ShortestPathData(graph, nodes[0], nodes[2], ArcInspectorFactory.getAllFilters().get(0));
+        data = new ShortestPathData(graph, nodes[0], nodes[2], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoC(new DijkstraAlgorithm(data));
 
-        data = new ShortestPathData(graph, nodes[0], nodes[3], ArcInspectorFactory.getAllFilters().get(0));
+        data = new ShortestPathData(graph, nodes[0], nodes[3], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoD(new DijkstraAlgorithm(data));
 
-        data = new ShortestPathData(graph, nodes[0], nodes[4], ArcInspectorFactory.getAllFilters().get(0));
+        data = new ShortestPathData(graph, nodes[0], nodes[4], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoE(new DijkstraAlgorithm(data));
     }
 
@@ -78,6 +78,20 @@ public class AStarAlgorithmTest extends DijkstraAlgorithmTest{
         // Fastest and shortest path from Rangueil to R2 restricted to roads open for cars
         data = new ShortestPathData(insa, insa.get(rangueil), insa.get(r2), ArcInspectorFactory.getAllFilters().get(0));
         testRangueilR2(new AStarAlgorithm(data));
+    }
+
+    @Test
+    public void testFrenchPolynesia() throws IOException {
+        int papeete = 3382;
+        int fare = 3642;
+        int pihau = 13979;
+        // Shortest path from Papeete to Pihau on any road
+        ShortestPathData data = new ShortestPathData(frenchpolynesia, frenchpolynesia.get(papeete), frenchpolynesia.get(pihau), ArcInspectorFactory.getAllFilters().get(0));
+        testPapeetePihau(new AStarAlgorithm(data));
+
+        // Invalid path from Papeete to Fare
+        data = new ShortestPathData(frenchpolynesia, frenchpolynesia.get(papeete), frenchpolynesia.get(fare), ArcInspectorFactory.getAllFilters().get(0));
+        testPapeeteFare(new AStarAlgorithm(data));
     }
 
 }

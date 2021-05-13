@@ -12,13 +12,12 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DijkstraAlgorithmTest {
 
-    // Small graph
-    protected static Graph graph, hautegaronne, insa;
+    // Small graphs
+    protected static Graph graph, hautegaronne, insa, frenchpolynesia;
 
     // List of nodes
     protected static Node[] nodes;
@@ -30,6 +29,11 @@ public class DijkstraAlgorithmTest {
     // Shortest path from A to another node
     protected static Path shortest2a, shortest2b, shortest2c, shortest2d, shortest2e;
 
+    /**
+     * Init all attributes with custom graph and files from the maps folder
+     * Throw IOException if files are not founds or invalids
+     * @throws IOException
+     */
     @Before
     public void initAll() throws IOException {
         // Restrict to acces mode FOOT only
@@ -64,6 +68,8 @@ public class DijkstraAlgorithmTest {
                 new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../maps/haute-garonne.mapgr")))).read();
         insa = new BinaryGraphReader(
                 new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../maps/insa.mapgr")))).read();
+        frenchpolynesia = new BinaryGraphReader(
+                new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../maps/french-polynesia.mapgr")))).read();
 
         // Create path
         shortest2a = new Path(graph, nodes[0]);
@@ -74,6 +80,10 @@ public class DijkstraAlgorithmTest {
 
     }
 
+
+    /**
+     * Test valid set of path from the custom graph
+     */
     @Test
     public void testValid() {
         // Accessible path from origin to destination
@@ -93,23 +103,31 @@ public class DijkstraAlgorithmTest {
         testValidAtoE(new DijkstraAlgorithm(data));
     }
 
+    /**
+     * Test invalid set of path from the custom graph
+     */
     @Test
     public void testInvalid() {
         // Unaccessible path from origin to destination (no pedestrian roads)
 
-        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(0));
+        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoB(new DijkstraAlgorithm(data));
 
-        data = new ShortestPathData(graph, nodes[0], nodes[2], ArcInspectorFactory.getAllFilters().get(0));
+        data = new ShortestPathData(graph, nodes[0], nodes[2], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoC(new DijkstraAlgorithm(data));
 
-        data = new ShortestPathData(graph, nodes[0], nodes[3], ArcInspectorFactory.getAllFilters().get(0));
+        data = new ShortestPathData(graph, nodes[0], nodes[3], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoD(new DijkstraAlgorithm(data));
 
-        data = new ShortestPathData(graph, nodes[0], nodes[4], ArcInspectorFactory.getAllFilters().get(0));
+        data = new ShortestPathData(graph, nodes[0], nodes[4], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoE(new DijkstraAlgorithm(data));
     }
 
+    /**
+     * Test set of paths from paths folder in the Haute Garonne map
+     * Throws IOException if paths are not founds or invalids
+     * @throws IOException
+     */
     @Test
     public void testHauteGaronne() throws IOException {
         int insa = 10991;
@@ -132,6 +150,11 @@ public class DijkstraAlgorithmTest {
         testINSABikiniTimeCar(new DijkstraAlgorithm(data));
     }
 
+    /**
+     * Test set of paths from paths folder in the INSA map
+     * Throws IOException if paths are not founds or invalids
+     * @throws IOException
+     */
     @Test
     public void testINSA() throws IOException {
         int rangueil = 552;
@@ -144,6 +167,25 @@ public class DijkstraAlgorithmTest {
         // Fastest and shortest path from Rangueil to R2 restricted to roads open for cars
         data = new ShortestPathData(insa, insa.get(rangueil), insa.get(r2), ArcInspectorFactory.getAllFilters().get(0));
         testRangueilR2(new DijkstraAlgorithm(data));
+    }
+
+    /**
+     * Test set of paths from paths folder in the French Polynesia map
+     * Throws IOException if paths are not founds or invalids
+     * @throws IOException
+     */
+    @Test
+    public void testFrenchPolynesia() throws IOException {
+        int papeete = 3382;
+        int fare = 3642;
+        int pihau = 13979;
+        // Shortest path from Papeete to Pihau on any road
+        ShortestPathData data = new ShortestPathData(frenchpolynesia, frenchpolynesia.get(papeete), frenchpolynesia.get(pihau), ArcInspectorFactory.getAllFilters().get(0));
+        testPapeetePihau(new DijkstraAlgorithm(data));
+
+        // Invalid path from Papeete to Fare
+        data = new ShortestPathData(frenchpolynesia, frenchpolynesia.get(papeete), frenchpolynesia.get(fare), ArcInspectorFactory.getAllFilters().get(0));
+        testPapeeteFare(new DijkstraAlgorithm(data));
     }
 
     public void testValidAtoA(ShortestPathAlgorithm algorithm) {
@@ -194,30 +236,30 @@ public class DijkstraAlgorithmTest {
 
     public void testInvalidAtoB(ShortestPathAlgorithm algorithm) {
         // A -X-> B
-        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(3));
-        ShortestPathSolution solution = new DijkstraAlgorithm(data).run();
+        ShortestPathSolution solution = algorithm.run();
         assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
+        assertNull(solution.getPath());
     }
 
     public void testInvalidAtoC(ShortestPathAlgorithm algorithm) {
         // A -X-> C
-        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[2], ArcInspectorFactory.getAllFilters().get(1));
-        ShortestPathSolution solution = new DijkstraAlgorithm(data).run();
+        ShortestPathSolution solution = algorithm.run();
         assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
+        assertNull(solution.getPath());
     }
 
     public void testInvalidAtoD(ShortestPathAlgorithm algorithm) {
         // A -X-> D
-        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[3], ArcInspectorFactory.getAllFilters().get(1));
-        ShortestPathSolution solution = new DijkstraAlgorithm(data).run();
+        ShortestPathSolution solution = algorithm.run();
         assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
+        assertNull(solution.getPath());
     }
 
     public void testInvalidAtoE(ShortestPathAlgorithm algorithm) {
         // A -X-> E
-        ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[4], ArcInspectorFactory.getAllFilters().get(1));
-        ShortestPathSolution solution = new DijkstraAlgorithm(data).run();
+        ShortestPathSolution solution = algorithm.run();
         assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
+        assertNull(solution.getPath());
     }
 
     public void testINSAAeroportTime(ShortestPathAlgorithm algorithm) throws IOException {
@@ -290,5 +332,23 @@ public class DijkstraAlgorithmTest {
         assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
+    }
+
+    public void testPapeetePihau(ShortestPathAlgorithm algorithm) throws IOException {
+        Path path = new BinaryPathReader(
+                new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../paths/path_pf_papeete_pihau_shortest.path"))))
+                .readPath(frenchpolynesia);
+
+        ShortestPathSolution solution = algorithm.run();
+        assertTrue(solution.getPath().isValid());
+        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(path.getLength(), solution.getPath().getLength(), 0);
+        assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
+    }
+
+    public void testPapeeteFare(ShortestPathAlgorithm algorithm) {
+        ShortestPathSolution solution = algorithm.run();
+        assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
+        assertNull(solution.getPath());
     }
 }
