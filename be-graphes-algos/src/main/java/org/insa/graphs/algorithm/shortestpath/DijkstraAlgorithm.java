@@ -106,7 +106,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             }
 
             path = new Path(data.getGraph(), arcs);
-            solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, path);
+            solution = new ShortestPathSolution(data, AbstractSolution.Status.OPTIMAL, path);
         } else {
             solution = new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE);
         }
