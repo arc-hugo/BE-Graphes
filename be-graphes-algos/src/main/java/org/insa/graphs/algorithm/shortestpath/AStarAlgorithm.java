@@ -31,7 +31,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         // Search for maximum speed (kmph) if we are in time mode
         int maxSpeed = 0;
         if (this.data.getMode() == AbstractInputData.Mode.TIME) {
-            System.out.println(this.data.getGraph().getGraphInformation().getMaximumSpeed());
             if (this.data.getGraph().getGraphInformation().hasMaximumSpeed())
                 maxSpeed = this.data.getGraph().getGraphInformation().getMaximumSpeed();
         }
