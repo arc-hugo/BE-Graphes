@@ -34,8 +34,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             System.out.println(this.data.getGraph().getGraphInformation().getMaximumSpeed());
             if (this.data.getGraph().getGraphInformation().hasMaximumSpeed())
                 maxSpeed = this.data.getGraph().getGraphInformation().getMaximumSpeed();
-            else
-                maxSpeed = 600; // highest possible speed
         }
         // Compute the estimated distance cost to destination before Dijkstra (est <= cost)
         Point dest = this.label_destination.getNode().getPoint();
@@ -43,7 +41,10 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             Point point = label.getNode().getPoint();
             double est = point.distanceTo(dest);
             if (this.data.getMode() == AbstractInputData.Mode.TIME)
-                est = est * 3600 / (maxSpeed * 1000);
+                if (maxSpeed != 0)
+                    est = est * 3600 / (maxSpeed * 1000);
+                else
+                    est = 0;
             label.setDestinationCost(est);
         }
         return super.doRun();
