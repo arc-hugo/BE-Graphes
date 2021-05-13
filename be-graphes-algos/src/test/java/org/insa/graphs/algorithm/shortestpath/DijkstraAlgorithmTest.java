@@ -8,7 +8,7 @@ import java.io.IOException;
 public class DijkstraAlgorithmTest extends AlgorithmTest {
 
     /**
-     * Test valid set of path from the custom graph
+     * Test valid set of path from custom graph
      */
     @Test
     public void testValid() {
@@ -30,7 +30,7 @@ public class DijkstraAlgorithmTest extends AlgorithmTest {
     }
 
     /**
-     * Test invalid set of path from the custom graph
+     * Test invalid set of path from custom graph
      */
     @Test
     public void testInvalid() {
@@ -50,7 +50,7 @@ public class DijkstraAlgorithmTest extends AlgorithmTest {
     }
 
     /**
-     * Test set of paths from paths folder in the Haute Garonne map
+     * Test set of paths from paths folder in Haute Garonne map
      * @throws IOException if paths are not founds or invalids
      */
     @Test
@@ -76,7 +76,7 @@ public class DijkstraAlgorithmTest extends AlgorithmTest {
     }
 
     /**
-     * Test set of paths from paths folder in the INSA map
+     * Test set of paths from paths folder in INSA map
      * @throws IOException if paths are not founds or invalids
      */
     @Test
@@ -88,13 +88,13 @@ public class DijkstraAlgorithmTest extends AlgorithmTest {
         ShortestPathData data = new ShortestPathData(insa, insa.get(rangueil), insa.get(entree), ArcInspectorFactory.getAllFilters().get(3));
         testRangueilINSA(new DijkstraAlgorithm(data));
 
-        // Fastest and shortest path from Rangueil to R2 restricted to roads open for cars
+        // Shortest path from Rangueil to R2 open to any roads
         data = new ShortestPathData(insa, insa.get(rangueil), insa.get(r2), ArcInspectorFactory.getAllFilters().get(0));
         testRangueilR2(new DijkstraAlgorithm(data));
     }
 
     /**
-     * Test set of paths from paths folder in the French Polynesia map
+     * Test set of paths from paths folder in French Polynesia map
      * @throws IOException if paths are not founds or invalids
      */
     @Test
@@ -109,5 +109,18 @@ public class DijkstraAlgorithmTest extends AlgorithmTest {
         // Invalid path from Papeete to Fare
         data = new ShortestPathData(frenchpolynesia, frenchpolynesia.get(papeete), frenchpolynesia.get(fare), ArcInspectorFactory.getAllFilters().get(0));
         testPapeeteFare(new DijkstraAlgorithm(data));
+    }
+
+    /**
+     * Test path from paths folder in Toulouse map
+     * @throws IOException if paths are not founds or invalids
+     */
+    @Test
+    public void testToulouse() throws IOException {
+        int insa = 11325;
+        int tonton = 18935; // perhaps the most important path
+        // Fastest path from INSA to Chez Tonton restricted to roads open for cars
+        ShortestPathData data = new ShortestPathData(toulouse, toulouse.get(insa), toulouse.get(tonton), ArcInspectorFactory.getAllFilters().get(3));
+        testINSATonton(new DijkstraAlgorithm(data));
     }
 }

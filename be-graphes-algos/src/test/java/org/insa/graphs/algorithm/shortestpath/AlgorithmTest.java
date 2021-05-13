@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 public class AlgorithmTest {
     // Small graphs
-    protected static Graph graph, hautegaronne, insa, frenchpolynesia;
+    protected static Graph graph, hautegaronne, toulouse, insa, frenchpolynesia;
 
     // List of nodes
     protected static Node[] nodes;
@@ -66,6 +66,8 @@ public class AlgorithmTest {
         graph = new Graph("test", "Test Map", Arrays.asList(nodes), null);
         hautegaronne = new BinaryGraphReader(
                 new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../maps/haute-garonne.mapgr")))).read();
+        toulouse = new BinaryGraphReader(
+                new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../maps/toulouse.mapgr")))).read();
         insa = new BinaryGraphReader(
                 new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../maps/insa.mapgr")))).read();
         frenchpolynesia = new BinaryGraphReader(
@@ -84,7 +86,7 @@ public class AlgorithmTest {
         // A --> A
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(shortest2a.getLength(), solution.getPath().getLength(), 0);
         assertEquals(shortest2a.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -95,7 +97,7 @@ public class AlgorithmTest {
         // A --> B
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(shortest2b.getLength(), solution.getPath().getLength(), 0);
         assertEquals(shortest2b.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -106,7 +108,7 @@ public class AlgorithmTest {
         // A --> C
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(shortest2c.getLength(), solution.getPath().getLength(), 0);
         assertEquals(shortest2c.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -117,7 +119,7 @@ public class AlgorithmTest {
         // A --> D
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(shortest2d.getLength(), solution.getPath().getLength(), 0);
         assertEquals(shortest2d.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -128,7 +130,7 @@ public class AlgorithmTest {
         // A --> E
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(shortest2e.getLength(), solution.getPath().getLength(), 0);
         assertEquals(shortest2e.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -178,7 +180,7 @@ public class AlgorithmTest {
 
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -192,7 +194,7 @@ public class AlgorithmTest {
 
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -206,7 +208,7 @@ public class AlgorithmTest {
 
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -220,7 +222,7 @@ public class AlgorithmTest {
 
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -234,7 +236,7 @@ public class AlgorithmTest {
 
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -248,7 +250,7 @@ public class AlgorithmTest {
 
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -262,7 +264,7 @@ public class AlgorithmTest {
 
         ShortestPathSolution solution = algorithm.run();
         assertTrue(solution.getPath().isValid());
-        assertEquals(AbstractSolution.Status.FEASIBLE, solution.getStatus());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
         assertEquals(path.getLength(), solution.getPath().getLength(), 0);
         assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
@@ -273,6 +275,20 @@ public class AlgorithmTest {
         ShortestPathSolution solution = algorithm.run();
         assertEquals(AbstractSolution.Status.INFEASIBLE, solution.getStatus());
         assertNull(solution.getPath());
+
+        return solution;
+    }
+
+    public ShortestPathSolution testINSATonton(ShortestPathAlgorithm algorithm) throws IOException {
+        Path path = new BinaryPathReader(
+                new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir")+"/../paths/path_fr31tls_insa_tonton.path"))))
+                .readPath(toulouse);
+
+        ShortestPathSolution solution = algorithm.run();
+        assertTrue(solution.getPath().isValid());
+        assertEquals(AbstractSolution.Status.OPTIMAL, solution.getStatus());
+        assertEquals(path.getLength(), solution.getPath().getLength(), 0);
+        assertEquals(path.getMinimumTravelTime(), solution.getPath().getMinimumTravelTime(), 0);
 
         return solution;
     }

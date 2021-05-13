@@ -94,4 +94,12 @@ public class AStarAlgorithmTest extends DijkstraAlgorithmTest{
         testPapeeteFare(new AStarAlgorithm(data));
     }
 
+    @Test
+    public void testToulouse() throws IOException {
+        int insa = 11325;
+        int tonton = 18935; // perhaps the most important path
+        // Fastest path from INSA to Chez Tonton restricted to roads open for cars
+        ShortestPathData data = new ShortestPathData(toulouse, toulouse.get(insa), toulouse.get(tonton), ArcInspectorFactory.getAllFilters().get(3));
+        testINSATonton(new AStarAlgorithm(data));
+    }
 }
