@@ -1,9 +1,7 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-import org.insa.graphs.model.Label;
-import org.insa.graphs.model.LabelStar;
-import org.insa.graphs.model.Node;
-import org.insa.graphs.model.Point;
+import org.insa.graphs.algorithm.AbstractInputData;
+import org.insa.graphs.model.*;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
@@ -30,11 +28,22 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
-        // Compute the estimated distance to destination before Dijkstra (est <= cost)
+        // Search for maximum speed (kmph) if we are in time mode
+        int maxSpeed = 0;
+        if (this.data.getMode() == AbstractInputData.Mode.TIME) {
+            System.out.println(this.data.getGraph().getGraphInformation().getMaximumSpeed());
+            if (this.data.getGraph().getGraphInformation().hasMaximumSpeed())
+                maxSpeed = this.data.getGraph().getGraphInformation().getMaximumSpeed();
+            else
+                maxSpeed = 600; // highest possible speed
+        }
+        // Compute the estimated distance cost to destination before Dijkstra (est <= cost)
         Point dest = this.label_destination.getNode().getPoint();
         for (Label label : this.labels) {
             Point point = label.getNode().getPoint();
             double est = point.distanceTo(dest);
+            if (this.data.getMode() == AbstractInputData.Mode.TIME)
+                est = est * 3600 / (maxSpeed * 1000);
             label.setDestinationCost(est);
         }
         return super.doRun();
