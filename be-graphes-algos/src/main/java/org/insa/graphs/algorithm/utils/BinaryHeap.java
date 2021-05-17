@@ -171,7 +171,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      */
     public boolean isValid() {
         boolean valid = true;
-        if (!this.isEmpty()) {
+        if (!this.isEmpty() && valid) {
             for (int i = 1; i < this.size() && valid; i++){
                 if (this.array.get(i).compareTo(this.array.get(this.indexParent(i))) < 0)
                     valid = false;
