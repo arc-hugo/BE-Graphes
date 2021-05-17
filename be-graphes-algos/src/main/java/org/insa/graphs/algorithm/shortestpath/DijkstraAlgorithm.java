@@ -76,23 +76,23 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             // Update all successors of min
             for (Arc current : min.getNode().getSuccessors()) {
                 Label label = this.labels[current.getDestination().getId()];
-                if (!label.isMarked() && this.data.isAllowed(current)) {
-                    if (label.getCost() > (min.getCost() + this.data.getCost(current))) {
-                        if (label.getParent() == null) {
-                            if (label.getNode().getId() == this.destination.getId())
-                                notifyDestinationReached(this.destination);
-                            else
-                                notifyNodeReached(label.getNode());
+                if (!label.isMarked() &&
+                    this.data.isAllowed(current) &&
+                    label.getCost() > (min.getCost() + this.data.getCost(current))) {
+                    if (label.getParent() == null) {
+                        if (label.getNode().getId() == this.destination.getId()) {
+                            notifyDestinationReached(this.destination);
                         } else {
-                            this.heap.remove(label);
+                            notifyNodeReached(label.getNode());
                         }
-                        // New cost
-                        double cost = min.getCost() + this.data.getCost(current);
-                        label.changeParent(current, cost);
-                        this.heap.insert(label);
+                    } else {
+                        this.heap.remove(label);
                     }
+                    // New cost
+                    double cost = min.getCost() + this.data.getCost(current);
+                    label.changeParent(current, cost);
+                    this.heap.insert(label);
                 }
-
             }
         }
 
