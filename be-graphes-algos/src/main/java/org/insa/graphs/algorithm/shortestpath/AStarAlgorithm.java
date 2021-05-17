@@ -30,9 +30,15 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     protected ShortestPathSolution doRun() {
         // Search for maximum speed (kmph) if we are in time mode
         int maxSpeed = 0;
-        if (this.data.getMode() == AbstractInputData.Mode.TIME) {
-            if (this.data.getGraph().getGraphInformation().hasMaximumSpeed())
-                maxSpeed = this.data.getGraph().getGraphInformation().getMaximumSpeed();
+        // Maximum speed allowed
+        if (this.data.getMode() == AbstractInputData.Mode.TIME &&
+            this.data.getMaximumSpeed() != GraphStatistics.NO_MAXIMUM_SPEED) {
+            maxSpeed = this.data.getMaximumSpeed();
+        }
+        // Or maximum graph speed
+        else if (this.data.getMode() == AbstractInputData.Mode.TIME &&
+                this.data.getGraph().getGraphInformation().hasMaximumSpeed()) {
+            maxSpeed = this.data.getGraph().getGraphInformation().getMaximumSpeed();
         }
         // Compute the estimated distance cost to destination before Dijkstra (est <= cost)
         Point dest = this.label_destination.getNode().getPoint();
