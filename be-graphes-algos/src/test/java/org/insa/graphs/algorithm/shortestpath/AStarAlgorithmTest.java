@@ -51,11 +51,11 @@ public class AStarAlgorithmTest extends DijkstraAlgorithmTest{
         int bikini = 63104;
         // Shortest path from INSA to Airport restricted to roads open for cars
         ShortestPathData data = new ShortestPathData(hautegaronne, hautegaronne.get(insa), hautegaronne.get(airport), ArcInspectorFactory.getAllFilters().get(1));
-        testINSAAeroportLength(new AStarAlgorithm(data));
+        testINSAAirportLength(new AStarAlgorithm(data));
 
         // Fastest path INSA to Airport restricted to roads open for cars
         data = new ShortestPathData(hautegaronne, hautegaronne.get(insa), hautegaronne.get(airport), ArcInspectorFactory.getAllFilters().get(3));
-        testINSAAeroportTime(new AStarAlgorithm(data));
+        testINSAAirportTime(new AStarAlgorithm(data));
 
         // Shortest path from INSA to Bikini on any road
         data = new ShortestPathData(hautegaronne, hautegaronne.get(insa), hautegaronne.get(bikini), ArcInspectorFactory.getAllFilters().get(0));
