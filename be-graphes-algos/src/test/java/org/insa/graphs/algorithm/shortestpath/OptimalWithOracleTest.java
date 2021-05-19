@@ -4,12 +4,31 @@ import org.insa.graphs.algorithm.ArcInspectorFactory;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
 public class OptimalWithOracleTest extends AlgorithmTest {
+
+    private void testThreeAlgorithm(ShortestPathSolution bellmanFord, ShortestPathSolution dijkstra, ShortestPathSolution aStar) {
+        // Compare Dijkstra to Bellman-Ford
+        assertEquals(bellmanFord.getStatus(), dijkstra.getStatus());
+        assertEquals(bellmanFord.getPath().getOrigin().getId(), dijkstra.getPath().getOrigin().getId());
+        assertEquals(bellmanFord.getPath().getDestination().getId(), dijkstra.getPath().getDestination().getId());
+        assertEquals(bellmanFord.getPath().getLength(), dijkstra.getPath().getLength(), 0);
+        assertEquals(bellmanFord.getPath().getMinimumTravelTime(), dijkstra.getPath().getMinimumTravelTime(), 0);
+
+        // Compare A* to Bellman-Ford
+        assertEquals(bellmanFord.getStatus(), aStar.getStatus());
+        assertEquals(bellmanFord.getPath().getOrigin().getId(), aStar.getPath().getOrigin().getId());
+        assertEquals(bellmanFord.getPath().getDestination().getId(), aStar.getPath().getDestination().getId());
+        assertEquals(bellmanFord.getPath().getLength(), aStar.getPath().getLength(), 0);
+        assertEquals(bellmanFord.getPath().getMinimumTravelTime(), aStar.getPath().getMinimumTravelTime(), 0);
+    }
+
     /**
-     * Test valid path from the custom graph with the three algorithm and compare Dijkstra and A* to Bellman-Ford
+     * Test valid path from custom graph with the three algorithm.
+     * Compare Dijkstra and A* to Bellman-Ford which serves as an oracle.
      */
     @Test
     public void testValid() {
@@ -19,19 +38,12 @@ public class OptimalWithOracleTest extends AlgorithmTest {
         ShortestPathSolution dijkstraSolution = testValidAtoE(new DijkstraAlgorithm(data));
         ShortestPathSolution aStarSolution = testValidAtoE(new AStarAlgorithm(data));
 
-        // Compare Dijkstra to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), dijkstraSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), dijkstraSolution.getPath().getMinimumTravelTime(), 0);
-
-        // Compare A* to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), aStarSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), aStarSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), aStarSolution.getPath().getMinimumTravelTime(), 0);
+        testThreeAlgorithm(bellmanFordSolution, dijkstraSolution, aStarSolution);
     }
 
     /**
-     * Test shortest path from paths folder in the INSA map with the three algorithm and compare Dijkstra and A* to Bellman-Ford
+     * Test shortest path from paths folder in INSA map with the three algorithm.
+     * Compare Dijkstra and A* to Bellman-Ford which serves as an oracle.
      * @throws IOException if paths are not founds or invalids
      */
     @Test
@@ -44,19 +56,12 @@ public class OptimalWithOracleTest extends AlgorithmTest {
         ShortestPathSolution dijkstraSolution = testRangueilINSA(new DijkstraAlgorithm(data));
         ShortestPathSolution aStarSolution = testRangueilINSA(new DijkstraAlgorithm(data));
 
-        // Compare Dijkstra to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), dijkstraSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), dijkstraSolution.getPath().getMinimumTravelTime(), 0);
-
-        // Compare A* to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), aStarSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), aStarSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), aStarSolution.getPath().getMinimumTravelTime(), 0);
+        testThreeAlgorithm(bellmanFordSolution, dijkstraSolution, aStarSolution);
     }
 
     /**
-     * Test fastest path from paths folder in the INSA map with the three algorithm and compare Dijkstra and A* to Bellman-Ford
+     * Test fastest path from paths folder in INSA map with the three algorithm.
+     * Compare Dijkstra and A* to Bellman-Ford which serves as an oracle.
      * @throws IOException if paths are not founds or invalids
      */
     @Test
@@ -69,70 +74,31 @@ public class OptimalWithOracleTest extends AlgorithmTest {
         ShortestPathSolution dijkstraSolution = testRangueilR2(new DijkstraAlgorithm(data));
         ShortestPathSolution aStarSolution = testRangueilR2(new AStarAlgorithm(data));
 
-        // Compare Dijkstra to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), dijkstraSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), dijkstraSolution.getPath().getMinimumTravelTime(), 0);
-
-        // Compare A* to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), aStarSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), aStarSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), aStarSolution.getPath().getMinimumTravelTime(), 0);
+        testThreeAlgorithm(bellmanFordSolution, dijkstraSolution, aStarSolution);
     }
 
     /**
-     * Test shortest path from paths folder in the Haute Garonne map with the three algorithm and compare Dijkstra and A* to Bellman-Ford
+     * Test shortest path from paths folder in French Polynesia map with the three algorithm.
+     * Compare Dijkstra and A* to Bellman-Ford which serves as an oracle.
      * @throws IOException if paths are not founds or invalids
      */
     @Test
     public void testPFPapeetePihau() throws IOException {
         int papeete = 3382;
         int pihau = 13979;
+
         // Shortest path from Papeete to Pihau on any road
         ShortestPathData data = new ShortestPathData(frenchpolynesia, frenchpolynesia.get(papeete), frenchpolynesia.get(pihau), ArcInspectorFactory.getAllFilters().get(0));
         ShortestPathSolution bellmanFordSolution = testPapeetePihau(new BellmanFordAlgorithm(data));
         ShortestPathSolution dijkstraSolution = testPapeetePihau(new DijkstraAlgorithm(data));
         ShortestPathSolution aStarSolution = testPapeetePihau(new AStarAlgorithm(data));
 
-        // Compare Dijkstra to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), dijkstraSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), dijkstraSolution.getPath().getMinimumTravelTime(), 0);
-
-        // Compare A* to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), aStarSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), aStarSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), aStarSolution.getPath().getMinimumTravelTime(), 0);
+        testThreeAlgorithm(bellmanFordSolution, dijkstraSolution, aStarSolution);
     }
 
     /**
-     * Test fastest path from paths folder in the Haute Garonne map with the three algorithm and compare Dijkstra and A* to Bellman-Ford
-     * @throws IOException if paths are not founds or invalids
-     */
-    @Test
-    public void testPFPapeeteFare() throws IOException {
-        int insa = 10991;
-        int airport = 89149;
-
-        // Fastest path INSA to Airport restricted to roads open for cars
-        ShortestPathData data = new ShortestPathData(hautegaronne, hautegaronne.get(insa), hautegaronne.get(airport), ArcInspectorFactory.getAllFilters().get(3));
-        ShortestPathSolution bellmanFordSolution = testINSAAeroportTime(new BellmanFordAlgorithm(data));
-        ShortestPathSolution dijkstraSolution = testINSAAeroportTime(new DijkstraAlgorithm(data));
-        ShortestPathSolution aStarSolution = testINSAAeroportTime(new AStarAlgorithm(data));
-
-        // Compare Dijkstra to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), dijkstraSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), dijkstraSolution.getPath().getMinimumTravelTime(), 0);
-
-        // Compare A* to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), aStarSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), aStarSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), aStarSolution.getPath().getMinimumTravelTime(), 0);
-    }
-
-    /**
-     * Test fastest path from paths folder in the Haute Garonne map with the three algorithm and compare Dijkstra and A* to Bellman-Ford
+     * Test fastest path from paths folder in Haute Garonne map with the three algorithm.
+     * Compare Dijkstra and A* to Bellman-Ford which serves as an oracle.
      * @throws IOException if paths are not founds or invalids
      */
     @Test
@@ -146,14 +112,58 @@ public class OptimalWithOracleTest extends AlgorithmTest {
         ShortestPathSolution dijkstraSolution = testINSATonton(new DijkstraAlgorithm(data));
         ShortestPathSolution aStarSolution = testINSATonton(new AStarAlgorithm(data));
 
-        // Compare Dijkstra to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), dijkstraSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), dijkstraSolution.getPath().getMinimumTravelTime(), 0);
+        testThreeAlgorithm(bellmanFordSolution, dijkstraSolution, aStarSolution);
+    }
 
-        // Compare A* to Bellman-Ford
-        assertEquals(bellmanFordSolution.getStatus(), aStarSolution.getStatus());
-        assertEquals(bellmanFordSolution.getPath().getLength(), aStarSolution.getPath().getLength(), 0);
-        assertEquals(bellmanFordSolution.getPath().getMinimumTravelTime(), aStarSolution.getPath().getMinimumTravelTime(), 0);
+    /**
+     * Test shortest path on 50 random origin/destination in Haute Garonne map with the three algorithm.
+     * Compare Dijkstra and A* to Bellman-Ford which serves as an oracle.
+     */
+    @Test
+    public void testToulouseRandomShortest() {
+        int i = 0;
+        Random rand = new Random();
+        while (i < 50) {
+            // Shortest path from random origin to random destination by any road or car only
+            ShortestPathData data = new ShortestPathData(toulouse,
+                    toulouse.get(rand.nextInt(toulouse.size())),
+                    toulouse.get(rand.nextInt(toulouse.size())),
+                    ArcInspectorFactory.getAllFilters().get(rand.nextInt(2)));
+            ShortestPathSolution bellmanFordSolution = new BellmanFordAlgorithm(data).run();
+            if (bellmanFordSolution.isFeasible()) {
+                ShortestPathSolution dijkstraSolution = new DijkstraAlgorithm(data).run();
+                ShortestPathSolution aStarSolution = new AStarAlgorithm(data).run();
+
+                testThreeAlgorithm(bellmanFordSolution, dijkstraSolution, aStarSolution);
+
+                i++;
+            }
+        }
+    }
+
+    /**
+     * Test fastest path on 50 random origin/destination in Haute Garonne map with the three algorithm.
+     * Compare Dijkstra and A* to Bellman-Ford which serves as an oracle.
+     */
+    @Test
+    public void testToulouseRandomFastest() {
+        int i = 0;
+        Random rand = new Random();
+        while (i < 50) {
+            // Shortest path from random origin to random destination by any road, car only or pedestrian only
+            ShortestPathData data = new ShortestPathData(toulouse,
+                    toulouse.get(rand.nextInt(toulouse.size())),
+                    toulouse.get(rand.nextInt(toulouse.size())),
+                    ArcInspectorFactory.getAllFilters().get(rand.nextInt(3)+2));
+            ShortestPathSolution bellmanFordSolution = new BellmanFordAlgorithm(data).run();
+            if (bellmanFordSolution.isFeasible()) {
+                ShortestPathSolution dijkstraSolution = new DijkstraAlgorithm(data).run();
+                ShortestPathSolution aStarSolution = new AStarAlgorithm(data).run();
+
+                testThreeAlgorithm(bellmanFordSolution, dijkstraSolution, aStarSolution);
+
+                i++;
+            }
+        }
     }
 }
