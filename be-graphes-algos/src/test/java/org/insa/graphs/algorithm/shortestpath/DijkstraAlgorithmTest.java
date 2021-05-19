@@ -35,7 +35,6 @@ public class DijkstraAlgorithmTest extends AlgorithmTest {
     @Test
     public void testInvalid() {
         // Unaccessible path from origin to destination (no pedestrian roads)
-
         ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoB(new DijkstraAlgorithm(data));
 
@@ -60,11 +59,11 @@ public class DijkstraAlgorithmTest extends AlgorithmTest {
         int bikini = 63104;
         // Shortest path from INSA to Airport restricted to roads open for cars
         ShortestPathData data = new ShortestPathData(hautegaronne, hautegaronne.get(insa), hautegaronne.get(airport), ArcInspectorFactory.getAllFilters().get(1));
-        testINSAAeroportLength(new DijkstraAlgorithm(data));
+        testINSAAirportLength(new DijkstraAlgorithm(data));
 
         // Fastest path INSA to Airport restricted to roads open for cars
         data = new ShortestPathData(hautegaronne, hautegaronne.get(insa), hautegaronne.get(airport), ArcInspectorFactory.getAllFilters().get(3));
-        testINSAAeroportTime(new DijkstraAlgorithm(data));
+        testINSAAirportTime(new DijkstraAlgorithm(data));
 
         // Shortest path from INSA to Bikini on any road
         data = new ShortestPathData(hautegaronne, hautegaronne.get(insa), hautegaronne.get(bikini), ArcInspectorFactory.getAllFilters().get(0));
