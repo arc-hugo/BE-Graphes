@@ -47,7 +47,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             double est = point.distanceTo(dest);
             if (this.data.getMode() == AbstractInputData.Mode.TIME)
                 if (maxSpeed != 0)
-                    est = est * 3600 / (maxSpeed * 1000);
+                    est = est * 3600.0 / (maxSpeed * 1000.0);
                 else
                     est = 0;
             label.setDestinationCost(est);
