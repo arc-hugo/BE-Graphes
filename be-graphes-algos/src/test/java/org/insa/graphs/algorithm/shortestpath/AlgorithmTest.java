@@ -103,7 +103,6 @@ public class AlgorithmTest {
         assertNull(solution.getPath());
     }
 
-
     public ShortestPathSolution testValidAtoA(ShortestPathAlgorithm algorithm) {
         // A --> A
         ShortestPathSolution solution = algorithm.run();
@@ -147,6 +146,7 @@ public class AlgorithmTest {
     public ShortestPathSolution testInvalidAtoB(ShortestPathAlgorithm algorithm) {
         // A -X-> B
         ShortestPathSolution solution = algorithm.run();
+        testInvalidSolution(solution);
 
         return solution;
     }
