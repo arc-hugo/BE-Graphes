@@ -27,7 +27,7 @@ public class OptimalWithoutOracleTest extends AlgorithmTest {
         // Proof for optimal Dijkstra :
         // Label cost is the shortest road cost's from the origin to this label.
         // Supplementary proof for optimal AStar :
-        // Estimated cost to destination must be inferior or equals to their real cost for each labels.
+        // Estimated cost to destination must be inferior or equals to real cost to destination of each labels.
         float cost = 0;
         Point dest = aStarSolution.getPath().getDestination().getPoint();
         float est;

@@ -88,6 +88,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     } else {
                         this.heap.remove(label);
                     }
+
+
                     // New cost
                     double cost = min.getCost() + this.data.getCost(current);
                     label.changeParent(current, cost);

@@ -30,7 +30,6 @@ public class AStarAlgorithmTest extends DijkstraAlgorithmTest{
     @Test
     public void testInvalid() {
         // Unaccessible path from origin to destination (no pedestrian roads)
-
         ShortestPathData data = new ShortestPathData(graph, nodes[0], nodes[1], ArcInspectorFactory.getAllFilters().get(1));
         testInvalidAtoB(new DijkstraAlgorithm(data));
 
