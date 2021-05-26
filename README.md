@@ -21,5 +21,5 @@ Les connaissance mobilisées sont les suivantes :
 - [x] Étape 3 - Implémentation de Dijkstra
 - [x] Étpae 4 - Plus court chemin (A*) et vérification
 - [x] Étape 5 - Optimalité des solutions obtenues
-- [ ] Étape 6 - Problème ouvert : Le chemin à l'écart
-- [ ] Étape 7 - Vidéo de présentation
+- [x] Étape 6 - Problème ouvert : Le chemin à l'écart
+- [x] Étape 7 - Vidéo de présentation
