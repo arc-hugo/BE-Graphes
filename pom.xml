@@ -6,13 +6,13 @@
 
 	<groupId>org.insa.graphs</groupId>
 	<artifactId>be-graphes-all</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>be-graphes-all</name>
 
 	<properties>
-		<jdk.version>1.15</jdk.version>
+		<jdk.version>16</jdk.version>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
 		<maven.compiler.target>${jdk.version}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,13 +22,13 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                 </configuration>
             </plugin>
-        </plugins>
+		</plugins>
     </build>
 
 	<dependencies>

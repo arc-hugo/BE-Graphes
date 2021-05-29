@@ -8,10 +8,11 @@
 	<parent>
 		<groupId>org.insa.graphs</groupId>
 		<artifactId>be-graphes-all</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>be-graphes-model</artifactId>
 	<name>be-graphes-model</name>
+	<packaging>jar</packaging>
 	
 </project>

@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.insa.graphs</groupId>
 		<artifactId>be-graphes-all</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<properties>
@@ -16,6 +16,7 @@
 
 	<artifactId>be-graphes-gui</artifactId>
 	<name>be-graphes-gui</name>
+	<packaging>jar</packaging>
 	
 	<!-- Repository for Salamander (dependency of Mapsforge). -->
 	<repositories>
@@ -26,7 +27,6 @@
 	</repositories>
 
 	<dependencies>
-	
 		<dependency>
 			<groupId>org.insa.graphs</groupId>
 			<artifactId>be-graphes-model</artifactId>
@@ -70,18 +70,37 @@
 		<!-- https://mvnrepository.com/artifact/org.mapsforge/mapsforge-map-reader -->
 		<dependency>
 			<groupId>org.mapsforge</groupId>
-			<artifactId>mapsforge-themes</artifactId>
-			<version>${mapsforge.version}</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.mapsforge/mapsforge-map-reader -->
-		<dependency>
-			<groupId>org.mapsforge</groupId>
 			<artifactId>mapsforge-map-reader</artifactId>
 			<version>${mapsforge.version}</version>
 		</dependency>
 
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.insa.graphs.gui.MainWindow</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
