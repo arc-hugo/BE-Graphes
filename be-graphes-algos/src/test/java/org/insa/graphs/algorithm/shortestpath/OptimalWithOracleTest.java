@@ -22,7 +22,8 @@ public class OptimalWithOracleTest extends AlgorithmTest {
         assertEquals(bellmanFord.getStatus(), aStar.getStatus());
         assertEquals(bellmanFord.getPath().getOrigin().getId(), aStar.getPath().getOrigin().getId());
         assertEquals(bellmanFord.getPath().getDestination().getId(), aStar.getPath().getDestination().getId());
-        assertEquals(bellmanFord.getPath().getLength(), aStar.getPath().getLength(), 0);
+        assertEquals("o = "+bellmanFord.getPath().getOrigin()+"d = "+bellmanFord.getPath().getDestination()
+                ,bellmanFord.getPath().getLength(), aStar.getPath().getLength(), 0);
         assertEquals(bellmanFord.getPath().getMinimumTravelTime(), aStar.getPath().getMinimumTravelTime(), 0);
     }
 
