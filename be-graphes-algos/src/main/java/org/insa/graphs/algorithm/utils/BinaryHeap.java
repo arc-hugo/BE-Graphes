@@ -24,7 +24,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      */
     public BinaryHeap() {
         this.currentSize = 0;
-        this.array = new ArrayList<E>();
+        this.array = new ArrayList<>();
     }
 
     /**
@@ -34,7 +34,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      */
     public BinaryHeap(BinaryHeap<E> heap) {
         this.currentSize = heap.currentSize;
-        this.array = new ArrayList<E>(heap.array);
+        this.array = new ArrayList<>(heap.array);
     }
 
     /**
@@ -171,7 +171,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      */
     public boolean isValid() {
         boolean valid = true;
-        if (!this.isEmpty() && valid) {
+        if (!this.isEmpty()) {
             for (int i = 1; i < this.size() && valid; i++){
                 if (this.array.get(i).compareTo(this.array.get(this.indexParent(i))) < 0)
                     valid = false;
